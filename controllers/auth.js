@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const bycrpt = require("bcrypt");
 
+const secretKey = crypto.randomBytes(32).toString('hex'); // Generate a random secret key
+
 authRouter.get("/users", async (req,res)=>{
     try {
         const users = await individual.find();
@@ -29,7 +31,7 @@ authRouter.post("/signUp", async (req,res)=>{
             return;
         }
 
-        individual.password = await bycrpt.hash(individual.password, 10);
+        user.password = await bycrpt.hash(user.password, 10);
         const newUser = new individual(user);
         const reponse = await newUser.save();
 
@@ -44,6 +46,33 @@ authRouter.post("/signUp", async (req,res)=>{
     }
 });
 
+authRouter.post("/login", async (req, res) => {
+    const { email, password } = req.body;  
+    try {
+      const prevUser = await individual.findOne({ email: email });
+      //console.log(prevUser);
+      if (!prevUser) {
+        res.status(401).send({ message: "Incorrect email or password!" });
+        
+        return;
+      }
+      const isMatch = await bycrpt.compareSync(password, prevUser.password);
+      if (!isMatch) {
+        res.status(401).send({ message: "Incorrect email or password!" });
+        return;
+      }
+  
+      // Generate a JWT token
+// Generate a JWT token
+    const token = jwt.sign({ userId: prevUser._id}, secretKey, { expiresIn: '1h'});
+
+  
+      //uses jwtwebtoken for auth
+      res.status(200).send({ message: "Login Successful", token: token });
+    } catch (error) {
+      res.status(500).send({ error: true, message: error.message });
+    }
+  });
 
 
 module.exports = authRouter;
