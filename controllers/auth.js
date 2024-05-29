@@ -64,7 +64,8 @@ authRouter.post("/login", async (req, res) => {
   
       // Generate a JWT token
 // Generate a JWT token
-    const token = jwt.sign({ userId: prevUser._id}, process.env.JWT_SECRET, { expiresIn: '1h'});
+    //console.log(prevUser.role);
+    const token = jwt.sign({ userId: prevUser._id, userRole: prevUser.role}, process.env.JWT_SECRET, { expiresIn: '1h'});
 
   
       //uses jwtwebtoken for auth
@@ -103,7 +104,7 @@ authRouter.delete("/users/:_id", async (req, res)=> {
       }catch(error){
         res.status(500).send({ error: true, message: error.message });
         }
-        
+
 });
 
 module.exports = authRouter;

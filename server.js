@@ -6,6 +6,7 @@ const mongoose = require("mongoose"); // Mongoose module for interacting with Mo
 // Import the authentication router
 const authRouter = require("./controllers/auth");
 const contentRouter = require("./controllers/content");
+const verifyRole = require("./middleware/verifyRole");
 
 const authMiddleware = require("./middleware/auth");
 // Load environment variables from.env file
@@ -27,7 +28,6 @@ try {
 } catch (error) {
   console.error("mongodb connection error: ", error);
 }
-
 // Register the router as a middleware for all routes
 app.use(router);
 
@@ -38,8 +38,9 @@ app.use("*", (req, res) => {
 
 // Register the authentication router at the /auth path
 router.use("/auth", authRouter);
-router.use("/auth/content", authMiddleware, contentRouter);
-
+router.use("/admin/content", authMiddleware, verifyRole('Admin'), contentRouter);
+router.use("/editor/content", authMiddleware, verifyRole('Editor'), contentRouter);
+router.use("/editor/content", authMiddleware, verifyRole('Viewer'), contentRouter);
 // Get the port number from the environment variables
 const port = process.env.PORT;
 

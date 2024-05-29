@@ -14,12 +14,12 @@ const contentSchema = new mongoose.Schema({
     required: true,
   },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference the User model
+    type: String,
+    required: true,
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category', // Reference the Category model (optional)
+    type: String,
+    required: true,
   },
   tags: {
     type: [String], // Array of strings for tags

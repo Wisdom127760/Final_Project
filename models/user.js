@@ -20,6 +20,8 @@ const usersSchema = new mongoose.Schema({
     role: {
       required: true,
       type: String,
+      enum: ['Admin', 'Editor', 'Viewer'],
+      default: 'Viewer' 
     }
   });
 

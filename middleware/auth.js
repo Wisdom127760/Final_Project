@@ -15,6 +15,7 @@ authMiddleware = (req, res, next) => {
         .send({ error: true, message: "Unauthorized access" });
     }
     req.userId = decoded.id;
+    req.userRole = decoded.userRole;
   });
 
   next();
