@@ -38,9 +38,9 @@ app.use("*", (req, res) => {
 
 // Register the authentication router at the /auth path
 router.use("/auth", authRouter);
-router.use("/admin/content", authMiddleware, verifyRole('Admin'), contentRouter);
-router.use("/editor/content", authMiddleware, verifyRole('Editor'), contentRouter);
-router.use("/editor/content", authMiddleware, verifyRole('Viewer'), contentRouter);
+router.use("/admin", authMiddleware, verifyRole('Admin'), contentRouter);
+router.use("/editor", authMiddleware, verifyRole('Editor'), contentRouter);
+router.use("/viewer", authMiddleware, verifyRole('Viewer'), contentRouter);
 // Get the port number from the environment variables
 const port = process.env.PORT;
 

@@ -31,10 +31,40 @@ contentRouter.post("/", async (req, res)=>{
         res.status(400).send("Content not created");
        }  
     }catch(error){
-        res.status(500).send({error: true, message: error.message})
+        res.status(500).send({error: true, message: error.message});
     }
 });
+contentRouter.put("/:_id", async (req, res) =>{
+    const { _id } = req.params;
+    const { title, description, content, author, category, tags, publishDate } = req.body;
+  
+    try{
+      const findContId = await myContent.findOne({_id });
+      if (!findContId) {
+        res.status(404).send({ message: "Content with ID not found" });
+        return;
+    }
+    const updatedContent = await myContent.findOneAndUpdate({_id }, { title, description, content, author, category, tags, publishDate }, {new:true});
+    res.status(200).send({ message: "Content updated successfully", updatedContent: updatedContent});
+  }catch(error){
+    res.status(500).send({ error: true, message: error.message });
+  }
+  });
 
+contentRouter.delete("/:_id", async (req, res)=> {
+    const { _id } = req.params;
+    try{
+      const findContId = await myContent.findOne({ _id });
+      if (!findContId) {
+        res.status(404).send({ message: "Content with ID not found" });
+        return;
+        }
+        const deletedContent = await myContent.findOneAndDelete({_id });
+        res.status(200).send({ message: "Content deleted successfully", deletedContent: deletedContent});
+        }catch(error){
+          res.status(500).send({ error: true, message: error.message });
+          }
+});
 
 
 module.exports = contentRouter;
