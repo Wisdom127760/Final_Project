@@ -5,7 +5,9 @@ const mongoose = require("mongoose"); // Mongoose module for interacting with Mo
 
 // Import the authentication router
 const authRouter = require("./controllers/auth");
+const contentRouter = require("./controllers/content");
 
+const authMiddleware = require("./middleware/auth");
 // Load environment variables from.env file
 dotenv.config();
 
@@ -36,6 +38,7 @@ app.use("*", (req, res) => {
 
 // Register the authentication router at the /auth path
 router.use("/auth", authRouter);
+router.use("/auth/content", authMiddleware, contentRouter);
 
 // Get the port number from the environment variables
 const port = process.env.PORT;

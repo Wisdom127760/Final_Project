@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const bycrpt = require("bcrypt");
 
-const secretKey = crypto.randomBytes(32).toString('hex'); // Generate a random secret key
+//const secretKey = crypto.randomBytes(32).toString('hex'); // Generate a random secret key
 
 authRouter.get("/users", async (req,res)=>{
     try {
@@ -64,7 +64,7 @@ authRouter.post("/login", async (req, res) => {
   
       // Generate a JWT token
 // Generate a JWT token
-    const token = jwt.sign({ userId: prevUser._id}, secretKey, { expiresIn: '1h'});
+    const token = jwt.sign({ userId: prevUser._id}, process.env.JWT_SECRET, { expiresIn: '1h'});
 
   
       //uses jwtwebtoken for auth
@@ -73,6 +73,37 @@ authRouter.post("/login", async (req, res) => {
       res.status(500).send({ error: true, message: error.message });
     }
   });
+authRouter.put("/users/:_id", async (req, res) =>{
+  const { _id } = req.params;
+  const { firstname, lastname, email, password } = req.body;
 
+  try{
+    const user = await individual.findOne({ _id: _id });
+    if (!user) {
+      res.status(404).send({ message: "User not found" });
+      return;
+  }
+  const updatedUser = await individual.findOneAndUpdate({ _id: _id }, { firstname, lastname, email, password }, {new:true});
+  res.status(200).send({ message: "User updated successfully", updatedUser: updatedUser});
+}catch(error){
+  res.status(500).send({ error: true, message: error.message });
+
+}
+});
+authRouter.delete("/users/:_id", async (req, res)=> {
+  const { _id } = req.params;
+  try{
+    const user = await individual.findOne({ _id: _id });
+    if (!user) {
+      res.status(404).send({ message: "User not found" });
+      return;
+      }
+      const deletedUser = await individual.findOneAndDelete({ _id: _id });
+      res.status(200).send({ message: "User deleted successfully", deletedUser: deletedUser});
+      }catch(error){
+        res.status(500).send({ error: true, message: error.message });
+        }
+        
+});
 
 module.exports = authRouter;
