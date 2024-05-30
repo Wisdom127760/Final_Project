@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const contentSchema = new mongoose.Schema({
   title: {
@@ -14,8 +15,8 @@ const contentSchema = new mongoose.Schema({
     required: true,
   },
   author: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId, // Reference to User model
+    ref: 'Users',
   },
   category: {
     type: String,

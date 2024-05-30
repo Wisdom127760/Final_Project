@@ -1,13 +1,14 @@
 const express = require("express");
 const contentRouter = express.Router();
 const myContent= require("../models/content");
+const individual = require("../models/user");
 
 
 contentRouter.get("/:_id", async (req,res)=>{
-    const {_id} = req.params;
+    const userId = req.params;
 
     try {
-        const getContent = await myContent.find({_id});
+        const getContent = await myContent.find({userId});
         if (getContent){
             res.status(200).send({message: "Content returned successfully", data: getContent });
         }else{
@@ -20,10 +21,11 @@ contentRouter.get("/:_id", async (req,res)=>{
 });
 
 contentRouter.post("/", async (req, res)=>{
-    const {title, description, content, author, category, tags, publishDate} = req.body;
-
+    const cms = req.body;
     try { 
-       const newContent = new myContent({title, description, content, author, category, tags, publishDate});
+     cms.author  = req.userId;
+      console.log(cms.author);
+       const newContent = new myContent(cms);
        const response = await newContent.save();
        if (response){
         res.status(201).send({message :"Content created succesfully!", data: newContent});
@@ -34,6 +36,7 @@ contentRouter.post("/", async (req, res)=>{
         res.status(500).send({error: true, message: error.message});
     }
 });
+
 contentRouter.put("/:_id", async (req, res) =>{
     const { _id } = req.params;
     const { title, description, content, author, category, tags, publishDate } = req.body;
