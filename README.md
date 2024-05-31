@@ -1,59 +1,39 @@
 # Final_Project
 
-Content Management System (CMS)
+## Content Management System (CMS) Backend
 
+This project implements a robust backend for a Content Management System (CMS) built with Node.js, Express, MongoDB, and JWT authentication. It allows users to create, edit, and delete content, with secure role-based access control (RBAC) for different user types.
 
-Project Overview
-In this project, you will develop a backend for a Content Management System (CMS). The CMS will allow users to create, edit, and delete content. It will also include role-based access control to manage different types of users and their permissions.
+**Key Features:**
 
-Project Goals
-Implement a robust CMS backend with fundamental CRUD operations.
-Ensure secure role-based access control (RBAC) for different user roles.
-Design and develop RESTful APIs for the CMS functionalities.
-Use MongoDB for database management.
+* **CRUD Operations:** Create, Read, Update, and Delete content.
+* **Role-Based Access Control (RBAC):**
+    * Admin: Full access to users and content management.
+    * Editor: Create, edit, and delete content (including their own).
+    * Viewer: View all published content.
+* **RESTful API:** Provides well-defined API endpoints for user and content management.
+* **MongoDB:** Stores user data and content securely.
+* **JWT Authentication:** Secure user login and authorization.
+* **Version Control (Git):** Facilitates collaboration and project management.
 
-Technologies
-Backend Framework: Node.js with Express
-Database: MongoDB
-Authentication: JSON Web Tokens (JWT)
-Version Control: Git
+**Project Highlights:**
 
-Project Requirements
+* Secure password hashing with bcrypt.
+* User registration and login functionalities.
+* User management for admins (create, edit, delete users).
+* Detailed content management for editors and admins.
+* Content visibility based on user roles.
 
-User Management
+**API Endpoints:**
 
-User Registration and Authentication: Users should be able to register and log in.
-User Roles: Implement at least three roles: Admin, Editor, and Viewer.
-Admin: Full access to all functionalities, including user management.
-Editor: Can create, edit, and delete content.
-Viewer: Can only view content.
+* User Management:
+    * Register a new user.
+    * Login and obtain JWT token.
+    * (Admin only) Manage user accounts (CRUD operations).
+* Content Management:
+    * (Editor/Admin) Create new content.
+    * (Editor/Admin) Edit existing content.
+    * (Editor/Admin) Delete content.
+    * View all published content (all user roles).
 
-Content Management
-
-Create Content: Allow Editors and Admins to create new content.
-Edit Content: Allow Editors and Admins to edit existing content.
-Delete Content: Allow Editors and Admins to delete content.
-View Content: Allow all users (including Viewers) to view content.
-Detailed User Roles and Permissions
-
-Admin:
-
-Manage users (create, view, update, delete).
-Manage all content (create, view, update, delete).
-
-Editor:
-
-Manage content they created (create, view, update, delete).
-View all content.
-
-Viewer:
-
-View all content.
-API Endpoints: come up with needed api endpoints 
-Database Schema: come up with suitable schema that works for you
-
-Security
-
-Authentication: Use JWT for user authentication.
-Authorization: Implement middleware to check user roles for accessing different endpoints.
-Password Management: Store passwords securely using hashing (e.g., bcrypt).
+**This backend provides a solid foundation for building a feature-rich and secure CMS application.**
